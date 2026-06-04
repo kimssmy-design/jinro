@@ -55,11 +55,11 @@ body { max-width: 430px; margin: 0 auto; min-height: 100dvh; position: relative;
 /* ── 탭1: 내 체험 조회 ── */
 .search-box { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 20px; margin-bottom: 16px; }
 .search-box label { font-size: 15px; font-weight: 600; display: block; margin-bottom: 10px; }
-.search-row { display: flex; gap: 8px; }
-.search-row input { flex: 1; border: 1.5px solid var(--separator-bold); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 16px; font-family: inherit; background: var(--bg); outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+.search-row { display: flex; gap: 8px; align-items: stretch; }
+.search-row input { flex: 1; border: 1.5px solid var(--separator-bold); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 16px; font-family: inherit; background: var(--bg); outline: none; transition: border-color 0.2s; -webkit-appearance: none; height: 48px; }
 .search-row input:focus { border-color: var(--navy); }
 .search-row input::placeholder { color: var(--text-tertiary); }
-.search-row button { background: var(--navy); color: #fff; border: none; border-radius: var(--radius-sm); padding: 12px 20px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap; transition: transform 0.1s, opacity 0.1s; }
+.search-row button { background: var(--navy); color: #fff; border: none; border-radius: var(--radius-sm); padding: 0 22px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap; transition: transform 0.1s, opacity 0.1s; height: 48px; flex-shrink: 0; }
 .search-row button:active { transform: scale(0.96); opacity: 0.85; }
 
 .result-section { margin-top: 4px; }
@@ -574,8 +574,8 @@ const expDesc={
    ================================================================ */
 const scheduleData=[
 [
-  {t:"07:40",title:"학생 집합 및 안전교육",sub:"화천체육관",type:"move"},
-  {t:"08:00",title:"차량 이동",sub:"화천 → 강원진로교육원 (약 2시간)",type:"move"},
+  {t:"08:20",title:"학생 집합 및 안전교육",sub:"화천체육관",type:"move"},
+  {t:"08:30",title:"차량 이동",sub:"화천 → 강원진로교육원 (약 2시간)",type:"move"},
   {t:"10:30",title:"생활관 짐 풀기",sub:"소강당 · 열쇠 관리 안내",type:"rest"},
   {t:"11:10",title:"여는 마당 — 오리엔테이션",sub:"생활관 · 휴대폰 수거",type:"rest"},
   {t:"12:00",title:"점심식사",sub:"식당",type:"meal"},

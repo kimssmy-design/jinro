@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>씨앗드림 진로체험학습</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #2B4C7E; --navy-dark: #1B3150; --navy-light: #3D6098;
+  --blue: #4A86C8;
+  --red: #E8443A; --orange: #E8913A; --green: #3BA55D; --purple: #7B68B5; --teal: #5A9FB8;
+  --bg: #EFF1F5; --card: #FFFFFF; --card-secondary: #F6F7FA;
+  --text-primary: #1E2A3A; --text-secondary: #5E6E80; --text-tertiary: #9AACB8;
+  --separator: rgba(30,42,58,0.07); --separator-bold: rgba(30,42,58,0.13);
+  --shadow-sm: 0 1px 3px rgba(27,49,80,0.05), 0 1px 2px rgba(27,49,80,0.04);
+  --shadow-md: 0 4px 14px rgba(27,49,80,0.07), 0 1px 4px rgba(27,49,80,0.04);
+  --radius: 14px; --radius-sm: 10px; --radius-xs: 8px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+html { font-family: -apple-system, 'Noto Sans KR', BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text-primary); -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+body { max-width: 430px; margin: 0 auto; min-height: 100dvh; position: relative; padding-bottom: calc(72px + var(--safe-bottom)); }
+
+/* ── 상단 배너 ── */
+.top-banner { background: linear-gradient(135deg, #1B3150 0%, #2B4C7E 100%); color: #fff; padding: calc(var(--safe-top) + 16px) 20px 18px; text-align: center; }
+.top-banner .badge { display: inline-block; background: rgba(255,255,255,0.18); color: #fff; font-size: 11px; font-weight: 600; padding: 3px 12px; border-radius: 20px; margin-bottom: 8px; letter-spacing: 0.3px; border: 1px solid rgba(255,255,255,0.2); }
+.top-banner .title { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
+.top-banner .subtitle { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 400; }
+.top-banner .gather-info { margin-top: 14px; background: rgba(255,255,255,0.1); border-radius: var(--radius-sm); padding: 12px 16px; border: 1px solid rgba(255,255,255,0.1); }
+.top-banner .gather-info .time { font-size: 22px; font-weight: 700; color: #fff; }
+.top-banner .gather-info .place { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 3px; }
+
+/* ── 탭 네비게이션 (iOS 세그먼트) ── */
+.tab-bar { position: sticky; top: 0; z-index: 100; background: rgba(239,241,245,0.9); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); padding: 12px 16px 8px; }
+.segment { display: flex; background: rgba(43,76,126,0.08); border-radius: 9px; padding: 2px; position: relative; }
+.segment button { flex: 1; border: none; background: transparent; font-family: inherit; font-size: 12px; font-weight: 500; color: var(--text-secondary); padding: 8px 2px; border-radius: 7px; cursor: pointer; position: relative; z-index: 2; transition: color 0.2s; display: flex; align-items: center; justify-content: center; gap: 3px; }
+.segment button.active { color: var(--navy); font-weight: 600; }
+.segment .indicator { position: absolute; top: 2px; left: 2px; height: calc(100% - 4px); border-radius: 7px; background: var(--card); box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.12); transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); z-index: 1; width: calc(25% - 1.5px); }
+.segment .indicator[data-tab="1"] { transform: translateX(100%); }
+.segment .indicator[data-tab="2"] { transform: translateX(200%); }
+.segment .indicator[data-tab="3"] { transform: translateX(300%); }
+
+/* ── 콘텐츠 영역 ── */
+.content { padding: 8px 16px 20px; }
+.tab-content { display: none; animation: fadeIn 0.25s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── 카드 공통 ── */
+.card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 10px; overflow: hidden; }
+
+/* ── 탭1: 내 체험 조회 ── */
+.search-box { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 20px; margin-bottom: 16px; }
+.search-box label { font-size: 15px; font-weight: 600; display: block; margin-bottom: 10px; }
+.search-row { display: flex; gap: 8px; }
+.search-row input { flex: 1; border: 1.5px solid var(--separator-bold); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 16px; font-family: inherit; background: var(--bg); outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+.search-row input:focus { border-color: var(--navy); }
+.search-row input::placeholder { color: var(--text-tertiary); }
+.search-row button { background: var(--navy); color: #fff; border: none; border-radius: var(--radius-sm); padding: 12px 20px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap; transition: transform 0.1s, opacity 0.1s; }
+.search-row button:active { transform: scale(0.96); opacity: 0.85; }
+
+.result-section { margin-top: 4px; }
+.result-section .section-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; padding: 16px 4px 8px; }
+
+.exp-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 8px; }
+.exp-card .exp-header { display: flex; align-items: center; padding: 14px 16px; cursor: pointer; gap: 12px; -webkit-user-select: none; user-select: none; }
+.exp-card .exp-icon { width: 36px; height: 36px; border-radius: var(--radius-xs); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.exp-card .exp-info { flex: 1; min-width: 0; }
+.exp-card .exp-category { font-size: 11px; font-weight: 600; letter-spacing: 0.3px; margin-bottom: 2px; }
+.exp-card .exp-name { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.exp-card .exp-time { font-size: 12px; color: var(--text-tertiary); margin-top: 1px; }
+.exp-card .chevron { font-size: 18px; color: var(--text-tertiary); transition: transform 0.3s; flex-shrink: 0; }
+.exp-card .chevron.open { transform: rotate(90deg); }
+.exp-card .exp-detail { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.25, 0.1, 0.25, 1); }
+.exp-card .exp-detail-inner { padding: 0 16px 14px 64px; font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+
+.color-career .exp-icon { background: rgba(74,134,200,0.1); color: var(--blue); }
+.color-career .exp-category { color: var(--blue); }
+.color-free .exp-icon { background: rgba(59,165,93,0.1); color: var(--green); }
+.color-free .exp-category { color: var(--green); }
+.color-job .exp-icon { background: rgba(232,145,58,0.12); color: var(--orange); }
+.color-job .exp-category { color: var(--orange); }
+.color-counsel .exp-icon { background: rgba(123,104,181,0.1); color: var(--purple); }
+.color-counsel .exp-category { color: var(--purple); }
+
+.no-result { text-align: center; padding: 40px 20px; color: var(--text-tertiary); }
+.no-result .icon { font-size: 48px; margin-bottom: 12px; display: block; }
+.no-result p { font-size: 14px; }
+
+/* ── 탭2: 숙소 안내 ── */
+.alert-card { border-radius: var(--radius); padding: 18px; margin-bottom: 10px; }
+.alert-card.danger { background: #FFF2F2; border: 1px solid rgba(255,59,48,0.15); }
+.alert-card.warning { background: #FFF9EE; border: 1px solid rgba(255,149,0,0.15); }
+.alert-card.info { background: #F0F4F9; border: 1px solid rgba(43,76,126,0.12); }
+.alert-card .alert-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.alert-card.danger .alert-title { color: var(--red); }
+.alert-card.warning .alert-title { color: #CC7700; }
+.alert-card.info .alert-title { color: var(--navy); }
+.alert-item { font-size: 13px; line-height: 1.65; padding: 4px 0; display: flex; align-items: flex-start; gap: 8px; }
+.alert-card.danger .alert-item { color: #CC2222; }
+.alert-card.warning .alert-item { color: #996600; }
+.alert-card.info .alert-item { color: var(--text-secondary); }
+.alert-item .bullet { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+
+.rule-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 10px; }
+.rule-header { display: flex; align-items: center; padding: 14px 16px; cursor: pointer; gap: 10px; -webkit-user-select: none; }
+.rule-header .rule-icon { font-size: 20px; }
+.rule-header .rule-title { flex: 1; font-size: 14px; font-weight: 600; }
+.rule-header .chevron { font-size: 16px; color: var(--text-tertiary); transition: transform 0.3s; }
+.rule-header .chevron.open { transform: rotate(90deg); }
+.rule-detail { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.rule-detail-inner { padding: 0 16px 14px 46px; font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+
+/* ── 탭3: 일정표 ── */
+.day-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.day-tab { flex: 1; background: var(--card); border: 1.5px solid var(--separator-bold); border-radius: var(--radius-sm); padding: 10px 4px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.day-tab.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+.day-tab .day-date { font-size: 11px; font-weight: 400; margin-top: 2px; display: block; }
+.day-tab.active .day-date { color: rgba(255,255,255,0.7); }
+
+.timeline { position: relative; }
+.tl-item { display: flex; gap: 12px; padding: 10px 0; position: relative; }
+.tl-time { min-width: 50px; font-size: 12px; color: var(--text-secondary); font-weight: 500; padding-top: 2px; text-align: right; }
+.tl-dot-line { display: flex; flex-direction: column; align-items: center; width: 14px; flex-shrink: 0; padding-top: 5px; }
+.tl-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.tl-line { width: 1.5px; flex: 1; background: var(--separator-bold); margin-top: 4px; }
+.tl-item:last-child .tl-line { display: none; }
+.tl-content { flex: 1; min-width: 0; padding-bottom: 10px; border-bottom: 0.5px solid var(--separator); }
+.tl-item:last-child .tl-content { border-bottom: none; }
+.tl-content .tl-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.tl-content .tl-sub { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+.tl-content .tl-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-top: 4px; }
+
+.tl-meal .tl-dot { background: var(--orange); }
+.tl-exp .tl-dot { background: var(--blue); }
+.tl-free .tl-dot { background: var(--green); }
+.tl-move .tl-dot { background: var(--text-tertiary); }
+.tl-counsel .tl-dot { background: var(--purple); }
+.tl-rest .tl-dot { background: var(--teal); }
+.tl-warn .tl-dot { background: var(--red); }
+
+.tl-meal .tl-badge { background: rgba(232,145,58,0.1); color: var(--orange); }
+.tl-exp .tl-badge { background: rgba(74,134,200,0.1); color: var(--blue); }
+.tl-free .tl-badge { background: rgba(59,165,93,0.1); color: var(--green); }
+.tl-counsel .tl-badge { background: rgba(123,104,181,0.1); color: var(--purple); }
+.tl-warn .tl-badge { background: rgba(232,68,58,0.1); color: var(--red); }
+
+/* ── 탭4: 생활관 배정 ── */
+.room-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 10px; overflow: hidden; }
+.room-header { display: flex; align-items: center; padding: 14px 16px; gap: 12px; }
+.room-number { width: 48px; height: 48px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; flex-shrink: 0; }
+.room-floor2 .room-number { background: rgba(43,76,126,0.1); color: var(--navy); }
+.room-floor3 .room-number { background: rgba(123,104,181,0.1); color: var(--purple); }
+.room-header .room-meta { flex: 1; }
+.room-header .room-label { font-size: 11px; color: var(--text-tertiary); font-weight: 500; }
+.room-header .room-title { font-size: 16px; font-weight: 600; }
+.room-header .room-count { font-size: 12px; color: var(--text-secondary); background: var(--bg); border-radius: 20px; padding: 3px 10px; font-weight: 500; flex-shrink: 0; }
+.room-members { padding: 0 16px 14px 76px; display: flex; flex-wrap: wrap; gap: 6px; }
+.room-member { background: var(--bg); border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 500; }
+
+/* ── 하단 워터마크 ── */
+.footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-tertiary); }
+</style>
+</head>
+<body>
+
+<!-- ===== 상단 배너 ===== -->
+<div class="top-banner">
+  <span class="badge">2025 씨앗드림</span>
+  <div class="title">진로체험학습 안내</div>
+  <div class="subtitle">강원특별자치도교육청 진로교육원 · 2박 3일</div>
+  <div class="gather-info">
+    <div class="time">6.10(수) 오전 7:40 집결</div>
+    <div class="place">평생체험관 주차장 (청소년 수련관 뒷쪽)</div>
+  </div>
+</div>
+
+<!-- ===== 탭 네비게이션 ===== -->
+<div class="tab-bar">
+  <div class="segment">
+    <div class="indicator" data-tab="0"></div>
+    <button class="active" onclick="switchTab(0)">🔍 내 체험</button>
+    <button onclick="switchTab(1)">🏠 숙소</button>
+    <button onclick="switchTab(2)">📅 일정표</button>
+    <button onclick="switchTab(3)">🛏️ 생활관</button>
+  </div>
+</div>
+
+<!-- ===== 탭1: 내 체험 조회 ===== -->
+<div class="content">
+<div id="tab0" class="tab-content active">
+  <div class="search-box">
+    <label>학번으로 내 체험 조회하기</label>
+    <div class="search-row">
+      <input type="tel" id="studentId" placeholder="학번 4자리 입력" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+      <button onclick="searchStudent()">조회</button>
+    </div>
+  </div>
+  <div id="result"></div>
+</div>
+
+<!-- ===== 탭2: 숙소 안내 ===== -->
+<div id="tab1" class="tab-content">
+
+  <div class="alert-card danger">
+    <div class="alert-title">⛔ 절대 금지사항</div>
+    <div class="alert-item"><span class="bullet">🚫</span><span><b>외부 음식물 반입 금지</b> — 편의점·외부 간식 절대 불가! 컵라면도 안 됩니다 (화상·악취·변기 막힘 원인)</span></div>
+    <div class="alert-item"><span class="bullet">🚫</span><span><b>외출 절대 금지</b> — 입소 후 마지막 날까지 원 밖 출입이 통제됩니다</span></div>
+    <div class="alert-item"><span class="bullet">🚫</span><span><b>화장실에 물티슈 버리기 금지</b> — 변기 막힘의 원인이 됩니다</span></div>
+    <div class="alert-item"><span class="bullet">🚫</span><span><b>다른 호실 출입·취침 금지</b> — 자기 호실 이외 출입 불가</span></div>
+    <div class="alert-item"><span class="bullet">🚫</span><span><b>슬리퍼로 본관 이동 금지</b> — 생활관 전용 실내화입니다</span></div>
+    <div class="alert-item"><span class="bullet">🚫</span><span>흡연, 음주, 폭력 등 → <b>퇴소 처분</b></span></div>
+  </div>
+
+  <div class="alert-card warning">
+    <div class="alert-title">🎒 반드시 챙겨오세요!</div>
+    <div class="alert-item"><span class="bullet">✅</span><span><b>텀블러 필수!</b> — 원내 매점·자판기 없음 (공감카페만 운영)</span></div>
+    <div class="alert-item"><span class="bullet">✅</span><span><b>수건, 세면도구, 드라이기</b> — 생활관에 비치되어 있지 않음 (비누·화장지만 제공)</span></div>
+    <div class="alert-item"><span class="bullet">✅</span><span><b>운동화</b> — 진로체험 활동 시 착용 필수</span></div>
+    <div class="alert-item"><span class="bullet">✅</span><span>속옷, 양말 등 개인 의류</span></div>
+  </div>
+
+  <div class="alert-card info">
+    <div class="alert-title">📱 휴대폰 안내</div>
+    <div class="alert-item"><span class="bullet">📵</span><span>체험·상담 시간에는 <b>휴대폰 수거</b></span></div>
+    <div class="alert-item"><span class="bullet">📱</span><span>매일 야간 간식 시간(21:00)에 배부</span></div>
+    <div class="alert-item"><span class="bullet">💡</span><span>진로 활동에 전념하는 분위기를 만들어주세요</span></div>
+  </div>
+
+  <div style="padding: 14px 4px 8px;">
+    <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.5px;">숙소 생활 안내</span>
+  </div>
+
+  <div class="rule-card">
+    <div class="rule-header" onclick="toggleRule(this)">
+      <span class="rule-icon">🕐</span>
+      <span class="rule-title">일과 시간</span>
+      <span class="chevron">›</span>
+    </div>
+    <div class="rule-detail"><div class="rule-detail-inner">
+      취침: 22:00 이후 정숙 / 기상 알림: 07:10<br>
+      아침식사: 07:20~08:20 (배식 8시 종료)<br>
+      간식 배부: 매일 21:00 (생활관 2층 회의실)
+    </div></div>
+  </div>
+
+  <div class="rule-card">
+    <div class="rule-header" onclick="toggleRule(this)">
+      <span class="rule-icon">🏠</span>
+      <span class="rule-title">생활관 시설</span>
+      <span class="chevron">›</span>
+    </div>
+    <div class="rule-detail"><div class="rule-detail-inner">
+      개별난방 조절 가능 (미리 켜두어야 함)<br>
+      온수는 저녁부터 사용 가능<br>
+      에어컨·히터 동시 사용 금지<br>
+      퇴실 시 방문·창문 닫기, 저녁에 블라인드 내리기<br>
+      전자키 분실 시 학생 개인 유료 배상<br>
+      시설·비품 파손 시 유료 배상
+    </div></div>
+  </div>
+
+  <div class="rule-card">
+    <div class="rule-header" onclick="toggleRule(this)">
+      <span class="rule-icon">📶</span>
+      <span class="rule-title">Wi-Fi & 기타</span>
+      <span class="chevron">›</span>
+    </div>
+    <div class="rule-detail"><div class="rule-detail-inner">
+      Wi-Fi: <b>jinro1004</b><br>
+      주변에 산이 많아 벌레 주의 (살충제·홈매트 당직실 비치)<br>
+      야간 응급 시 → 속초의료원 응급실<br>
+      사물함 비밀번호 분실 시 인솔 선생님 마스터키 사용
+    </div></div>
+  </div>
+
+  <div class="rule-card">
+    <div class="rule-header" onclick="toggleRule(this)">
+      <span class="rule-icon">🍽️</span>
+      <span class="rule-title">식사 안내</span>
+      <span class="chevron">›</span>
+    </div>
+    <div class="rule-detail"><div class="rule-detail-inner">
+      아침 07:30~08:00 / 점심 12:00~13:00 / 저녁 18:00~19:00<br>
+      질서 있게 줄 서서 배식, 비는 자리에 차례대로 착석<br>
+      식판 정리 및 퇴식대 이용
+    </div></div>
+  </div>
+
+  <div class="rule-card">
+    <div class="rule-header" onclick="toggleRule(this)">
+      <span class="rule-icon">🧹</span>
+      <span class="rule-title">퇴실 시 정리</span>
+      <span class="chevron">›</span>
+    </div>
+    <div class="rule-detail"><div class="rule-detail-inner">
+      마지막 날 아침: 이불·베개커버·카페트는 방 앞 복도에 내놓기<br>
+      ⚠️ 침대커버는 절대 벗기지 않기!<br>
+      분리수거 및 호실 청결 관리
+    </div></div>
+  </div>
+</div>
+
+<!-- ===== 탭3: 일정표 ===== -->
+<div id="tab2" class="tab-content">
+  <div class="day-tabs">
+    <div class="day-tab active" onclick="switchDay(0)">1일차<span class="day-date">6/10 (수)</span></div>
+    <div class="day-tab" onclick="switchDay(1)">2일차<span class="day-date">6/11 (목)</span></div>
+    <div class="day-tab" onclick="switchDay(2)">3일차<span class="day-date">6/12 (금)</span></div>
+  </div>
+  <div id="schedule"></div>
+</div>
+
+<!-- ===== 탭4: 생활관 배정 ===== -->
+<div id="tab3" class="tab-content">
+  <div class="alert-card info" style="margin-bottom: 14px;">
+    <div class="alert-title">🏢 생활관 배정 안내 (2반)</div>
+    <div class="alert-item"><span class="bullet">📍</span><span>2층(200번대) · 3층(300번대) 배정</span></div>
+    <div class="alert-item"><span class="bullet">🔑</span><span>전자키 분실 시 개인 유료 배상</span></div>
+  </div>
+
+  <div style="padding: 2px 4px 8px;"><span style="font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.5px;">2층</span></div>
+
+  <div class="room-card room-floor2">
+    <div class="room-header">
+      <div class="room-number">202</div>
+      <div class="room-meta">
+        <div class="room-label">생활관 2층</div>
+        <div class="room-title">202호</div>
+      </div>
+      <span class="room-count">4명</span>
+    </div>
+    <div class="room-members">
+      <span class="room-member">3224</span><span class="room-member">3206</span><span class="room-member">3214</span><span class="room-member">3220</span>
+    </div>
+  </div>
+
+  <div class="room-card room-floor2">
+    <div class="room-header">
+      <div class="room-number">203</div>
+      <div class="room-meta">
+        <div class="room-label">생활관 2층</div>
+        <div class="room-title">203호</div>
+      </div>
+      <span class="room-count">4명</span>
+    </div>
+    <div class="room-members">
+      <span class="room-member">3212</span><span class="room-member">3209</span><span class="room-member">3203</span><span class="room-member">3210</span>
+    </div>
+  </div>
+
+  <div class="room-card room-floor2">
+    <div class="room-header">
+      <div class="room-number">205</div>
+      <div class="room-meta">
+        <div class="room-label">생활관 2층</div>
+        <div class="room-title">205호</div>
+      </div>
+      <span class="room-count">2명</span>
+    </div>
+    <div class="room-members">
+      <span class="room-member">3205</span><span class="room-member">3216</span>
+    </div>
+  </div>
+
+  <div style="padding: 14px 4px 8px;"><span style="font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.5px;">3층</span></div>
+
+  <div class="room-card room-floor3">
+    <div class="room-header">
+      <div class="room-number">307</div>
+      <div class="room-meta">
+        <div class="room-label">생활관 3층</div>
+        <div class="room-title">307호</div>
+      </div>
+      <span class="room-count">4명</span>
+    </div>
+    <div class="room-members">
+      <span class="room-member">3213</span><span class="room-member">3201</span><span class="room-member">3211</span><span class="room-member">3217</span>
+    </div>
+  </div>
+
+  <div class="room-card room-floor3">
+    <div class="room-header">
+      <div class="room-number">308</div>
+      <div class="room-meta">
+        <div class="room-label">생활관 3층</div>
+        <div class="room-title">308호</div>
+      </div>
+      <span class="room-count">3명</span>
+    </div>
+    <div class="room-members">
+      <span class="room-member">3218</span><span class="room-member">3223</span><span class="room-member">3225</span>
+    </div>
+  </div>
+
+  <div class="room-card room-floor3">
+    <div class="room-header">
+      <div class="room-number">309</div>
+      <div class="room-meta">
+        <div class="room-label">생활관 3층</div>
+        <div class="room-title">309호</div>
+      </div>
+      <span class="room-count">3명</span>
+    </div>
+    <div class="room-members">
+      <span class="room-member">3207</span><span class="room-member">3219</span><span class="room-member">3202</span>
+    </div>
+  </div>
+
+  <div class="room-card room-floor3">
+    <div class="room-header">
+      <div class="room-number">310</div>
+      <div class="room-meta">
+        <div class="room-label">생활관 3층</div>
+        <div class="room-title">310호</div>
+      </div>
+      <span class="room-count">2명</span>
+    </div>
+    <div class="room-members">
+      <span class="room-member">3215</span><span class="room-member">3204</span>
+    </div>
+  </div>
+</div>
+
+<div class="footer">강원특별자치도교육청 진로교육원 씨앗드림 프로그램</div>
+</div><!-- .content -->
+
+<script>
+/* ================================================================
+   데이터: 학생 배정
+   ================================================================ */
+const students={
+"3201":{"c1":"과학수사","c2":"종합의료","f1":"통기타 연주","f2":"무알콜 칵테일 만들기","j1":"회계사(세무사)","j2":"오케스트라(악기소개&연주)","cs":"권혜경","cr":"6실"},
+"3202":{"c1":"광고","c2":"토탈뷰티","f1":"제과제빵","f2":"타일아트","j1":"방송 PD","j2":"AI 마케팅전문가","cs":"권혜경","cr":"6실"},
+"3203":{"c1":"기후변화빅데이터","c2":"진로체육","f1":"풍선아트","f2":"게임디자이너, 게임기획자 체험","j1":"공인중개사","j2":"서적 및 AI정보 자료 전문가","cs":"박예진","cr":"10실"},
+"3204":{"c1":"미래농업","c2":"진로음악","f1":"애견미용","f2":"한국무용 안무(K-댄스)","j1":"간호사","j2":"교사","cs":"권혜경","cr":"6실"},
+"3205":{"c1":"기후변화빅데이터","c2":"진로미술","f1":"풍선아트","f2":"게임디자이너, 게임기획자 체험","j1":"공인중개사","j2":"서적 및 AI정보 자료 전문가","cs":"박예진","cr":"10실"},
+"3206":{"c1":"해양과학","c2":"진로음악","f1":"타일아트","f2":"굿즈 만들기","j1":"AI 마케팅전문가","j2":"방송 PD","cs":"박예진","cr":"10실"},
+"3207":{"c1":"기후변화빅데이터","c2":"해양과학","f1":"제과제빵","f2":"타일아트","j1":"방송 PD","j2":"AI 마케팅전문가","cs":"권혜경","cr":"6실"},
+"3209":{"c1":"애니메이션","c2":"광고","f1":"무알콜 칵테일 만들기","f2":"게임디자이너, 게임기획자 체험","j1":"생명공학 연구원","j2":"국방 전문가(군인)","cs":"심은정","cr":"1실"},
+"3210":{"c1":"진로음악","c2":"미래농업","f1":"한국무용 안무(K-댄스)","f2":"커피 만들기","j1":"국방 전문가(군인)","j2":"생명공학 연구원","cs":"심은정","cr":"1실"},
+"3211":{"c1":"목공","c2":"패션","f1":"통기타 연주","f2":"샌드아트","j1":"암벽 등반 지도자(클라이밍)","j2":"소방관","cs":"심은정","cr":"1실"},
+"3212":{"c1":"메이커스페이스","c2":"애니메이션","f1":"굿즈 만들기","f2":"향수만들기","j1":"국방 전문가(군인)","j2":"생명공학 연구원","cs":"심은정","cr":"1실"},
+"3213":{"c1":"진로도서관","c2":"과학수사","f1":"애견미용","f2":"제과제빵","j1":"공무원","j2":"소방관","cs":"심은정","cr":"1실"},
+"3214":{"c1":"목공","c2":"패션","f1":"게임 캐릭터 디자인","f2":"향수만들기","j1":"교사","j2":"실내 건축 디자이너","cs":"권혜경","cr":"6실"},
+"3215":{"c1":"광고","c2":"진로미술","f1":"풍선아트","f2":"한국무용 안무(K-댄스)","j1":"간호사","j2":"교사","cs":"심은정","cr":"1실"},
+"3216":{"c1":"진로미술","c2":"방송","f1":"굿즈 만들기","f2":"무알콜 칵테일 만들기","j1":"생명공학 연구원","j2":"국방 전문가(군인)","cs":"권혜경","cr":"6실"},
+"3217":{"c1":"메이커스페이스","c2":"진로미술","f1":"무알콜 칵테일 만들기","f2":"통기타 연주","j1":"회계사(세무사)","j2":"간호사","cs":"심은정","cr":"1실"},
+"3218":{"c1":"진로체육","c2":"토탈뷰티","f1":"향수만들기","f2":"통기타 연주","j1":"소방관","j2":"바이올린 연주자","cs":"박예진","cr":"10실"},
+"3219":{"c1":"방송","c2":"드론","f1":"향수만들기","f2":"한국무용 안무(K-댄스)","j1":"암벽 등반 지도자(클라이밍)","j2":"간호사","cs":"박예진","cr":"10실"},
+"3220":{"c1":"메이커스페이스","c2":"드론","f1":"타일아트","f2":"굿즈 만들기","j1":"AI 마케팅전문가","j2":"방송 PD","cs":"권혜경","cr":"6실"},
+"3223":{"c1":"방송","c2":"메이커스페이스","f1":"샌드아트","f2":"통기타 연주","j1":"공무원","j2":"오케스트라(악기소개&연주)","cs":"박예진","cr":"10실"},
+"3224":{"c1":"진로체육","c2":"항공","f1":"커피 만들기","f2":"애견미용","j1":"교사","j2":"실내 건축 디자이너","cs":"권혜경","cr":"6실"},
+"3225":{"c1":"패션","c2":"과학수사","f1":"샌드아트","f2":"제과제빵","j1":"소방관","j2":"바이올린 연주자","cs":"박예진","cr":"10실"},
+"3101":{"c1":"드론","c2":"애니메이션","f1":"제과제빵","f2":"무알콜 칵테일 만들기","j1":"실내 건축 디자이너","j2":"소방관","cs":"주은서","cr":"3실"},
+"3102":{"c1":"기후변화빅데이터","c2":"진로미술","f1":"제과제빵","f2":"커피 만들기","j1":"재무 컨설턴트(투자 전문가)","j2":"회계사(세무사)","cs":"주은서","cr":"3실"},
+"3103":{"c1":"진로체육","c2":"토탈뷰티","f1":"연기실습","f2":"한국무용 안무(K-댄스)","j1":"간호사","j2":"방송 PD","cs":"양금옥","cr":"13실"},
+"3104":{"c1":"진로미술","c2":"방송","f1":"애견미용","f2":"연기실습","j1":"방송 PD","j2":"암벽 등반 지도자(클라이밍)","cs":"양금옥","cr":"13실"},
+"3105":{"c1":"자율주행자동차","c2":"진로음악","f1":"게임디자이너, 게임기획자 체험","f2":"게임 캐릭터 디자인","j1":"AI 마케팅전문가","j2":"서적 및 AI정보 자료 전문가","cs":"주은서","cr":"3실"},
+"3106":{"c1":"기후변화빅데이터","c2":"자율주행자동차","f1":"커피 만들기","f2":"통기타 연주","j1":"소방관","j2":"간호사","cs":"주은서","cr":"3실"},
+"3107":{"c1":"진로도서관","c2":"방송","f1":"통기타 연주","f2":"무알콜 칵테일 만들기","j1":"소방관","j2":"간호사","cs":"류은혜","cr":"4실"},
+"3109":{"c1":"애니메이션","c2":"드론","f1":"통기타 연주","f2":"무알콜 칵테일 만들기","j1":"암벽 등반 지도자(클라이밍)","j2":"교사","cs":"류은혜","cr":"4실"},
+"3110":{"c1":"미래농업","c2":"기후변화빅데이터","f1":"향수만들기","f2":"한국무용 안무(K-댄스)","j1":"교사","j2":"공무원","cs":"양금옥","cr":"13실"},
+"3111":{"c1":"기후변화빅데이터","c2":"진로체육","f1":"타일아트","f2":"샌드아트","j1":"재무 컨설턴트(투자 전문가)","j2":"회계사(세무사)","cs":"류은혜","cr":"4실"},
+"3112":{"c1":"메이커스페이스","c2":"건축","f1":"향수만들기","f2":"굿즈 만들기","j1":"바이올린 연주자","j2":"생명공학 연구원","cs":"양금옥","cr":"13실"},
+"3113":{"c1":"기후변화빅데이터","c2":"자율주행자동차","f1":"무알콜 칵테일 만들기","f2":"향수만들기","j1":"공무원","j2":"회계사(세무사)","cs":"류은혜","cr":"4실"},
+"3114":{"c1":"목공","c2":"패션","f1":"커피 만들기","f2":"통기타 연주","j1":"오케스트라(악기소개&연주)","j2":"국방 전문가(군인)","cs":"류은혜","cr":"4실"},
+"3115":{"c1":"종합의료","c2":"방송","f1":"향수만들기","f2":"굿즈 만들기","j1":"바이올린 연주자","j2":"생명공학 연구원","cs":"류은혜","cr":"4실"},
+"3116":{"c1":"진로미술","c2":"메이커스페이스","f1":"게임 캐릭터 디자인","f2":"게임디자이너, 게임기획자 체험","j1":"서적 및 AI정보 자료 전문가","j2":"AI 마케팅전문가","cs":"류은혜","cr":"4실"},
+"3118":{"c1":"방송","c2":"종합의료","f1":"애견미용","f2":"연기실습","j1":"방송 PD","j2":"암벽 등반 지도자(클라이밍)","cs":"류은혜","cr":"4실"},
+"3119":{"c1":"목공","c2":"토탈뷰티","f1":"연기실습","f2":"제과제빵","j1":"재무 컨설턴트(투자 전문가)","j2":"생명공학 연구원","cs":"주은서","cr":"3실"},
+"3120":{"c1":"자율주행자동차","c2":"진로음악","f1":"커피 만들기","f2":"통기타 연주","j1":"오케스트라(악기소개&연주)","j2":"교사","cs":"양금옥","cr":"13실"},
+"3121":{"c1":"드론","c2":"항공","f1":"통기타 연주","f2":"커피 만들기","j1":"암벽 등반 지도자(클라이밍)","j2":"교사","cs":"양금옥","cr":"13실"},
+"3122":{"c1":"진로도서관","c2":"과학수사","f1":"게임 캐릭터 디자인","f2":"게임디자이너, 게임기획자 체험","j1":"서적 및 AI정보 자료 전문가","j2":"AI 마케팅전문가","cs":"주은서","cr":"3실"},
+"3123":{"c1":"과학수사","c2":"드론","f1":"연기실습","f2":"향수만들기","j1":"국방 전문가(군인)","j2":"공무원","cs":"주은서","cr":"3실"},
+"3124":{"c1":"패션","c2":"진로도서관","f1":"무알콜 칵테일 만들기","f2":"제과제빵","j1":"교사","j2":"공무원","cs":"주은서","cr":"3실"},
+"3125":{"c1":"항공","c2":"미래농업","f1":"타일아트","f2":"샌드아트","j1":"실내 건축 디자이너","j2":"소방관","cs":"양금옥","cr":"13실"},
+"3301":{"c1":"진로도서관","c2":"미래농업","f1":"게임디자이너, 게임기획자 체험","f2":"커피 만들기","j1":"AI 마케팅전문가","j2":"재무 컨설턴트(투자 전문가)","cs":"최창순","cr":"8실"},
+"3303":{"c1":"진로미술","c2":"진로도서관","f1":"향수만들기","f2":"한국무용 안무(K-댄스)","j1":"방송 PD","j2":"오케스트라(악기소개&연주)","cs":"이진솔","cr":"5실"},
+"3304":{"c1":"토탈뷰티","c2":"건축","f1":"샌드아트","f2":"요가","j1":"재무 컨설턴트(투자 전문가)","j2":"실내 건축 디자이너","cs":"이진솔","cr":"5실"},
+"3305":{"c1":"미래농업","c2":"기후변화빅데이터","f1":"연기실습","f2":"굿즈 만들기","j1":"간호사","j2":"생명공학 연구원","cs":"이진솔","cr":"5실"},
+"3306":{"c1":"패션","c2":"종합의료","f1":"한국무용 안무(K-댄스)","f2":"연기실습","j1":"오케스트라(악기소개&연주)","j2":"방송 PD","cs":"이진솔","cr":"5실"},
+"3307":{"c1":"진로미술","c2":"방송","f1":"굿즈 만들기","f2":"커피 만들기","j1":"AI 마케팅전문가","j2":"재무 컨설턴트(투자 전문가)","cs":"최창순","cr":"8실"},
+"3310":{"c1":"목공","c2":"미래농업","f1":"굿즈 만들기","f2":"타일아트","j1":"생명공학 연구원","j2":"국방 전문가(군인)","cs":"최창순","cr":"8실"},
+"3311":{"c1":"애니메이션","c2":"광고","f1":"게임 캐릭터 디자인","f2":"무알콜 칵테일 만들기","j1":"소방관","j2":"암벽 등반 지도자(클라이밍)","cs":"최창순","cr":"8실"},
+"3312":{"c1":"항공","c2":"목공","f1":"게임 캐릭터 디자인","f2":"무알콜 칵테일 만들기","j1":"소방관","j2":"암벽 등반 지도자(클라이밍)","cs":"최창순","cr":"8실"},
+"3313":{"c1":"미래농업","c2":"해양과학","f1":"제과제빵","f2":"애견미용","j1":"실내 건축 디자이너","j2":"간호사","cs":"이진솔","cr":"5실"},
+"3314":{"c1":"진로체육","c2":"목공","f1":"굿즈 만들기","f2":"타일아트","j1":"생명공학 연구원","j2":"국방 전문가(군인)","cs":"이진솔","cr":"5실"},
+"3315":{"c1":"종합의료","c2":"목공","f1":"애견미용","f2":"요가","j1":"재무 컨설턴트(투자 전문가)","j2":"실내 건축 디자이너","cs":"최창순","cr":"8실"},
+"3316":{"c1":"건축","c2":"드론","f1":"커피 만들기","f2":"게임디자이너, 게임기획자 체험","j1":"교사","j2":"AI 마케팅전문가","cs":"이진솔","cr":"5실"},
+"3317":{"c1":"방송","c2":"메이커스페이스","f1":"애견미용","f2":"요가","j1":"재무 컨설턴트(투자 전문가)","j2":"실내 건축 디자이너","cs":"최창순","cr":"8실"},
+"3318":{"c1":"해양과학","c2":"건축","f1":"무알콜 칵테일 만들기","f2":"제과제빵","j1":"재무 컨설턴트(투자 전문가)","j2":"AI 마케팅전문가","cs":"이진솔","cr":"5실"},
+"3319":{"c1":"광고","c2":"진로체육","f1":"향수만들기","f2":"한국무용 안무(K-댄스)","j1":"방송 PD","j2":"오케스트라(악기소개&연주)","cs":"최창순","cr":"8실"},
+"3320":{"c1":"목공","c2":"패션","f1":"무알콜 칵테일 만들기","f2":"제과제빵","j1":"암벽 등반 지도자(클라이밍)","j2":"간호사","cs":"최창순","cr":"8실"},
+"3321":{"c1":"진로도서관","c2":"자율주행자동차","f1":"커피 만들기","f2":"풍선아트","j1":"암벽 등반 지도자(클라이밍)","j2":"소방관","cs":"이진솔","cr":"5실"},
+"3322":{"c1":"진로음악","c2":"진로체육","f1":"한국무용 안무(K-댄스)","f2":"연기실습","j1":"오케스트라(악기소개&연주)","j2":"방송 PD","cs":"최창순","cr":"8실"},
+"3323":{"c1":"과학수사","c2":"자율주행자동차","f1":"게임디자이너, 게임기획자 체험","f2":"커피 만들기","j1":"AI 마케팅전문가","j2":"재무 컨설턴트(투자 전문가)","cs":"이진솔","cr":"5실"},
+"3324":{"c1":"토탈뷰티","c2":"애니메이션","f1":"연기실습","f2":"굿즈 만들기","j1":"간호사","j2":"생명공학 연구원","cs":"최창순","cr":"8실"},
+"3401":{"c1":"진로미술","c2":"건축","f1":"연기실습","f2":"한국무용 안무(K-댄스)","j1":"간호사","j2":"방송 PD","cs":"신어진","cr":"12실"},
+"3402":{"c1":"토탈뷰티","c2":"항공","f1":"한국무용 안무(K-댄스)","f2":"연기실습","j1":"재무 컨설턴트(투자 전문가)","j2":"공인중개사","cs":"신어진","cr":"12실"},
+"3403":{"c1":"과학수사","c2":"자율주행자동차","f1":"게임디자이너, 게임기획자 체험","f2":"게임 캐릭터 디자인","j1":"국방 전문가(군인)","j2":"소방관","cs":"안은희","cr":"9실"},
+"3404":{"c1":"진로음악","c2":"패션","f1":"애견미용","f2":"게임디자이너, 게임기획자 체험","j1":"암벽 등반 지도자(클라이밍)","j2":"소방관","cs":"안은희","cr":"9실"},
+"3405":{"c1":"항공","c2":"진로미술","f1":"무알콜 칵테일 만들기","f2":"커피 만들기","j1":"회계사(세무사)","j2":"교사","cs":"안은희","cr":"9실"},
+"3406":{"c1":"진로음악","c2":"진로도서관","f1":"굿즈 만들기","f2":"애견미용","j1":"공무원","j2":"실내 건축 디자이너","cs":"신어진","cr":"12실"},
+"3407":{"c1":"메이커스페이스","c2":"자율주행자동차","f1":"애견미용","f2":"게임디자이너, 게임기획자 체험","j1":"생명공학 연구원","j2":"재무 컨설턴트(투자 전문가)","cs":"안은희","cr":"9실"},
+"3408":{"c1":"패션","c2":"목공","f1":"샌드아트","f2":"향수만들기","j1":"소방관","j2":"간호사","cs":"이재랑","cr":"11실"},
+"3409":{"c1":"자율주행자동차","c2":"진로음악","f1":"게임디자이너, 게임기획자 체험","f2":"게임 캐릭터 디자인","j1":"국방 전문가(군인)","j2":"방송 PD","cs":"이재랑","cr":"11실"},
+"3410":{"c1":"자율주행자동차","c2":"미래농업","f1":"무알콜 칵테일 만들기","f2":"커피 만들기","j1":"회계사(세무사)","j2":"교사","cs":"이재랑","cr":"11실"},
+"3411":{"c1":"종합의료","c2":"자율주행자동차","f1":"제과제빵","f2":"통기타 연주","j1":"공인중개사","j2":"재무 컨설턴트(투자 전문가)","cs":"이재랑","cr":"11실"},
+"3412":{"c1":"토탈뷰티","c2":"진로체육","f1":"굿즈 만들기","f2":"애견미용","j1":"공무원","j2":"실내 건축 디자이너","cs":"이재랑","cr":"11실"},
+"3413":{"c1":"진로도서관","c2":"애니메이션","f1":"한국무용 안무(K-댄스)","f2":"연기실습","j1":"재무 컨설턴트(투자 전문가)","j2":"공인중개사","cs":"이재랑","cr":"11실"},
+"3414":{"c1":"건축","c2":"드론","f1":"통기타 연주","f2":"무알콜 칵테일 만들기","j1":"암벽 등반 지도자(클라이밍)","j2":"소방관","cs":"이재랑","cr":"11실"},
+"3415":{"c1":"토탈뷰티","c2":"항공","f1":"샌드아트","f2":"향수만들기","j1":"간호사","j2":"AI 마케팅전문가","cs":"안은희","cr":"9실"},
+"3416":{"c1":"메이커스페이스","c2":"과학수사","f1":"제과제빵","f2":"타일아트","j1":"서적 및 AI정보 자료 전문가","j2":"공인중개사","cs":"안은희","cr":"9실"},
+"3417":{"c1":"과학수사","c2":"진로음악","f1":"향수만들기","f2":"제과제빵","j1":"방송 PD","j2":"간호사","cs":"안은희","cr":"9실"},
+"3418":{"c1":"진로도서관","c2":"방송","f1":"게임 캐릭터 디자인","f2":"굿즈 만들기","j1":"실내 건축 디자이너","j2":"암벽 등반 지도자(클라이밍)","cs":"이재랑","cr":"11실"},
+"3419":{"c1":"해양과학","c2":"진로체육","f1":"게임디자이너, 게임기획자 체험","f2":"게임 캐릭터 디자인","j1":"국방 전문가(군인)","j2":"방송 PD","cs":"신어진","cr":"12실"},
+"3420":{"c1":"해양과학","c2":"건축","f1":"통기타 연주","f2":"무알콜 칵테일 만들기","j1":"생명공학 연구원","j2":"재무 컨설턴트(투자 전문가)","cs":"신어진","cr":"12실"},
+"3421":{"c1":"건축","c2":"항공","f1":"커피 만들기","f2":"풍선아트","j1":"교사","j2":"국방 전문가(군인)","cs":"신어진","cr":"12실"},
+"3422":{"c1":"과학수사","c2":"기후변화빅데이터","f1":"향수만들기","f2":"제과제빵","j1":"소방관","j2":"AI 마케팅전문가","cs":"안은희","cr":"9실"},
+"3423":{"c1":"드론","c2":"애니메이션","f1":"게임 캐릭터 디자인","f2":"굿즈 만들기","j1":"실내 건축 디자이너","j2":"암벽 등반 지도자(클라이밍)","cs":"신어진","cr":"12실"},
+"3424":{"c1":"진로체육","c2":"목공","f1":"커피 만들기","f2":"풍선아트","j1":"교사","j2":"국방 전문가(군인)","cs":"신어진","cr":"12실"}
+};
+
+/* ================================================================
+   데이터: 체험 설명 (PDF 3~5페이지)
+   ================================================================ */
+const expDesc={
+"목공":"전통 기술과 AI 소프트웨어를 활용한 CNC, UV 프린터 등 현대적 첨단 도구로 목제품을 만드는 과정을 체험하고 관련 직업을 탐색합니다.",
+"진로도서관":"AI를 활용한 그림책·오디오북 만들기, 북큐레이션 제작, 자유 독서 등 협업·의사소통 능력을 기르며 진로 선택에 도움을 주는 활동입니다.",
+"광고":"광고 기획자, 카피라이터, 아트디렉터 역할을 체험합니다. AI 소프트웨어를 접목해 나만의 사원증 만들기(개별)와 30초 홍보영상 제작(팀)을 진행합니다.",
+"패션":"패션MD, 디자이너, 스타일리스트, 모델, 사진작가 임무를 수행합니다. AI 기술로 트렌드 화보를 기획·디자인하고 가상 패션화보를 제작합니다.",
+"애니메이션":"AI로 새로운 아이디어·스타일을 탐색하고, 나만의 캐릭터가 있는 애니메이션을 제작합니다. 작가, 애니메이터, 편집자/음향감독을 체험합니다.",
+"기후변화빅데이터":"VR 영상·실감미디어 콘텐츠로 기후변화 원인을 분석하고, 온실가스 저감 등 대응책을 연구하며 기후변화 분야 진로를 탐색합니다.",
+"방송":"AI 기술을 활용해 방송 프로그램을 기획·제작합니다. 방송PD, 방송작가, 진행자, 촬영감독 등의 직업을 탐구합니다.",
+"해양과학":"4D 배 모형 시뮬레이터 '진로누리호'를 운항하며 해양자원·해양생물·해양환경을 탐사하고, 자신에게 맞는 해양과학 직업을 탐색합니다.",
+"항공":"조종사, 승무원 직업 체험을 통해 항공 기본상식을 배우고, 항공 시뮬레이터(소형기, 전투기), 포네틱 코드, 비상장비·기내방송 실습을 체험합니다.",
+"토탈뷰티":"AI 피부·두피 진단, 스마트 미러를 활용한 헤어디자인, 가상메이크업, 네일아트 등을 통해 뷰티산업 트렌드를 익히며 관련 직업을 체험합니다.",
+"종합의료":"CPR, 자동제세동기 사용법을 익히고 정맥·근육주사를 실습합니다. 증강현실로 인체 구조를 이해하고 VR 수술·봉합 실습을 체험합니다.",
+"과학수사":"국과수 연구관 체험! 지문 채취, 족적 채취, CCTV 분석, 절도사건 프로파일링 팀미션을 진행합니다. AI 빅데이터로 사건 해결에 참여합니다.",
+"건축":"이미지 생성형 AI로 건축물을 구상하고, 3D 설계 프로그램으로 도면을 그리고 공간디자인을 합니다. 레고 아키텍처·나무모형으로 시공 체험도 합니다.",
+"로보틱스":"인공지능 로봇을 제작·운영하며 로봇공학의 H/W와 S/W를 체험합니다. 수준별 AI 코딩교육으로 진로를 탐색합니다.",
+"드론":"드론 법규, 비행 원리, 기초 조종법을 배운 뒤 AI 드론 개인 미션 및 드론 축구 팀 미션으로 드론 산업 관련 직업을 체험합니다.",
+"메이커스페이스":"3D프린터를 중심으로 AI, 메타버스 등 여러 분야와 융합한 다양한 디지털 메이킹 활동을 통해 메이킹 관련 진로를 탐색합니다.",
+"자율주행자동차":"미래형 도시와 스마트시티의 필요성을 이해하고, AI를 활용한 자율주행차 원리와 과정을 체험하며 교통 문제 해결 과정을 경험합니다.",
+"미래농업":"AI 기술이 접목된 식물공장을 체험하고, 미래식량으로 주목받는 곤충 활용법을 경험하며 직접 작물을 수확합니다.",
+"진로미술":"실크스크린 기법으로 아트상품을 제작하고, AI 프로그램(드로잉, AI음성제작, 가상공간 갤러리)으로 큐레이터·도슨트 활동을 체험합니다.",
+"진로음악":"세상의 수많은 소리를 만드는 직업(사운드 디자이너, 사운드 엔지니어)을 체험합니다. AI 기술과 프로그래밍으로 자신만의 소리를 만듭니다.",
+"진로체육":"재활·피트니스·선수 트레이너 등 다양한 트레이너 직업을 체험합니다. AR과 AI 기술을 접목한 트레이닝 체험을 할 수 있습니다.",
+"향수만들기":"다양한 향을 시향하고, 각각의 향이 지닌 특성을 파악하여 나만의 향수를 만듭니다.",
+"굿즈 만들기":"재미있는 DIY 페브릭 굿즈 만들기 체험입니다.",
+"게임 캐릭터 디자인":"휴대폰이나 태블릿을 이용하여 픽셀아트와 복셀아트를 제작하고 비교하는 체험입니다.",
+"타일아트":"미술과 공예를 콜라보레이션한 부조작품을 제작하는 기법을 배웁니다.",
+"애견미용":"모형 강아지를 이용한 미용 실습을 체험합니다.",
+"커피 만들기":"나만의 커피 드립백 만들기! 드립백 추출을 응용한 로푸스 크림라떼 만들기도 합니다.",
+"창작무용":"신체활동(창작무용)을 통해 자신의 흥미와 적성을 인식하는 체험입니다.",
+"연기실습":"연기실습을 통해 자기 이해와 공감을 확장하는 진로교육 프로그램입니다.",
+"요가":"바른 정렬을 만들고 건강한 몸과 마음을 만드는 요가 체험입니다.",
+"통기타 연주":"통기타의 기본 명칭과 역할에 대해 탐구하며 기초 연주법을 배웁니다.",
+"제과제빵":"제과제빵 기초교육과 다양한 제과제빵 실습을 합니다.",
+"게임디자이너, 게임기획자 체험":"하나의 게임을 완성하는 과정을 중심으로 기획·디자인·개발의 직무 역할을 체험합니다.",
+"샌드아트":"빛과 모래를 이용해 다양하고 아름다운 이미지를 만들어 움직이는 듯한 생동감을 느끼는 감성예술 체험입니다.",
+"무알콜 칵테일 만들기":"칵테일에 사용되는 주류와 음료를 이해하고 무알콜 칵테일을 직접 만들어봅니다.",
+"풍선아트":"풍선의 기본 기법을 배워 개인 작품과 단체 작품을 만듭니다.",
+"한국무용 안무(K-댄스)":"한국무용 안무(K-댄스)를 통해 신체 표현력과 예술적 감각을 기릅니다.",
+"스마트시티자율주행자동차":"미래형 도시와 스마트시티의 필요성을 이해하고, AI를 활용한 자율주행차 원리와 과정을 체험합니다."
+};
+
+/* ================================================================
+   데이터: 일정표 (PDF 2페이지)
+   ================================================================ */
+const scheduleData=[
+[
+  {t:"08:20",title:"학생 집합 및 안전교육",sub:"화천체육관",type:"move"},
+  {t:"08:30",title:"차량 이동",sub:"화천 → 강원진로교육원 (약 2시간)",type:"move"},
+  {t:"10:30",title:"생활관 짐 풀기",sub:"소강당 · 열쇠 관리 안내",type:"rest"},
+  {t:"11:10",title:"여는 마당 — 오리엔테이션",sub:"생활관 · 휴대폰 수거",type:"rest"},
+  {t:"12:00",title:"점심식사",sub:"식당",type:"meal"},
+  {t:"13:00",title:"진로상담 1 (90분)",sub:"진로상담실",type:"counsel"},
+  {t:"14:40",title:"전문직업인과의 만남 1 (40분)",sub:"배정 체험실",type:"exp"},
+  {t:"15:30",title:"전문직업인과의 만남 2 (40분)",sub:"배정 체험실",type:"exp"},
+  {t:"16:30",title:"진로상담 2 (90분)",sub:"진로상담실",type:"counsel"},
+  {t:"18:00",title:"저녁식사",sub:"식당",type:"meal"},
+  {t:"19:00",title:"자유체험 1 (120분)",sub:"지정체험실 · 원외 출입 금지",type:"free"},
+  {t:"21:00",title:"간식 + 휴대폰 배부",sub:"생활관",type:"rest"},
+  {t:"22:00",title:"정리 및 취침",sub:"생활관 · 타실 이동 금지",type:"warn"}
+],
+[
+  {t:"07:10",title:"기상 알림",sub:"생활관",type:"rest"},
+  {t:"07:20",title:"아침식사",sub:"배식 8시 종료",type:"meal"},
+  {t:"08:20",title:"생활관 정리 및 자유시간",sub:"원내 · 원외 출입 금지",type:"rest"},
+  {t:"09:20",title:"진로체험 1 (150분)",sub:"진로체험실 · 휴대폰 수거",type:"exp",badge:"2시간 30분"},
+  {t:"12:00",title:"점심식사",sub:"식당",type:"meal"},
+  {t:"13:00",title:"꿈을 찍는 반별 사진첩 만들기",sub:"원내 · 담임교사 동참, 휴대폰 사용 관리",type:"free"},
+  {t:"14:30",title:"진로체험 2 (150분)",sub:"진로체험실",type:"exp",badge:"2시간 30분"},
+  {t:"17:00",title:"VR체험 및 자유시간",sub:"원내 · 원외 출입 금지",type:"free"},
+  {t:"18:00",title:"저녁식사",sub:"식당",type:"meal"},
+  {t:"19:00",title:"자유체험 2 (120분)",sub:"지정체험실",type:"free"},
+  {t:"21:00",title:"간식 + 휴대폰 배부",sub:"생활관",type:"rest"},
+  {t:"22:00",title:"정리 및 취침",sub:"생활관 · 타실 이동 금지",type:"warn"}
+],
+[
+  {t:"07:10",title:"기상 알림",sub:"생활관",type:"rest"},
+  {t:"07:20",title:"아침식사",sub:"배식 8시 종료",type:"meal"},
+  {t:"08:20",title:"생활관 짐 정리 및 퇴실",sub:"청소 지도 · 열쇠 회수",type:"rest"},
+  {t:"09:20",title:"진로상담 3 (90분)",sub:"진로상담실 · 휴대폰 수거",type:"counsel"},
+  {t:"11:00",title:"진로 나눔 및 닫는 마당",sub:"소강당",type:"exp"},
+  {t:"12:00",title:"점심식사",sub:"식당 · 휴대폰 배부",type:"meal"},
+  {t:"13:00",title:"차량 이동",sub:"강원진로교육원 → 화천 (약 2시간)",type:"move"},
+  {t:"15:00",title:"학생 귀가 지도",sub:"건강 상태 확인, 쓰레기 수거",type:"move"}
+]
+];
+
+/* ================================================================
+   탭 전환
+   ================================================================ */
+function switchTab(i){
+  document.querySelectorAll('.tab-content').forEach((el,j)=>{
+    el.classList.toggle('active',j===i);
+  });
+  document.querySelectorAll('.segment button').forEach((btn,j)=>{
+    btn.classList.toggle('active',j===i);
+  });
+  document.querySelector('.indicator').setAttribute('data-tab',i);
+  if(i===2) renderSchedule(currentDay);
+}
+
+/* ================================================================
+   탭1: 학생 검색
+   ================================================================ */
+const iconMap={career:'🎯',free:'🎨',job:'👔',counsel:'💬'};
+document.getElementById('studentId').addEventListener('keydown',e=>{
+  if(e.key==='Enter') searchStudent();
+});
+
+function searchStudent(){
+  const id=document.getElementById('studentId').value.trim();
+  const box=document.getElementById('result');
+  if(!id){box.innerHTML='';return;}
+  const s=students[id];
+  if(!s){
+    box.innerHTML='<div class="no-result"><span class="icon">🔎</span><p>학번 <b>'+id+'</b>을 찾을 수 없습니다.<br>4자리 학번을 확인해주세요.</p></div>';
+    return;
+  }
+  const items=[
+    {cat:'진로체험 1',time:'목 09:20~11:50',name:s.c1,color:'career',icon:'🎯'},
+    {cat:'진로체험 2',time:'목 14:30~17:00',name:s.c2,color:'career',icon:'🎯'},
+    {cat:'자유체험 1',time:'수 19:00~21:00',name:s.f1,color:'free',icon:'🎨'},
+    {cat:'자유체험 2',time:'목 19:00~21:00',name:s.f2,color:'free',icon:'🎨'},
+    {cat:'직업인과의 만남 1',time:'수 14:40~15:20',name:s.j1,color:'job',icon:'👔'},
+    {cat:'직업인과의 만남 2',time:'수 15:30~16:10',name:s.j2,color:'job',icon:'👔'},
+    {cat:'진로상담',time:'1·2·3일차 배정',name:s.cs+' 선생님 · '+s.cr,color:'counsel',icon:'💬'}
+  ];
+  let html='<div class="result-section">';
+  html+='<div class="section-label">'+id+' 체험 배정 내역</div>';
+  items.forEach(item=>{
+    const desc=expDesc[item.name]||'';
+    const hasDesc=!!desc;
+    html+=`<div class="exp-card color-${item.color}">
+      <div class="exp-header" ${hasDesc?'onclick="toggleExp(this)"':''}>
+        <div class="exp-icon">${item.icon}</div>
+        <div class="exp-info">
+          <div class="exp-category">${item.cat} <span style="font-weight:400;color:var(--text-tertiary);font-size:10px;">${item.time}</span></div>
+          <div class="exp-name">${item.name}</div>
+        </div>
+        ${hasDesc?'<span class="chevron">›</span>':''}
+      </div>
+      ${hasDesc?`<div class="exp-detail"><div class="exp-detail-inner">${desc}</div></div>`:''}
+    </div>`;
+  });
+  html+='</div>';
+  box.innerHTML=html;
+  box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleExp(header){
+  const card=header.parentElement;
+  const detail=card.querySelector('.exp-detail');
+  const chevron=header.querySelector('.chevron');
+  if(!detail) return;
+  if(detail.style.maxHeight && detail.style.maxHeight!=='0px'){
+    detail.style.maxHeight='0px';
+    chevron.classList.remove('open');
+  } else {
+    detail.style.maxHeight=detail.scrollHeight+'px';
+    chevron.classList.add('open');
+  }
+}
+
+/* ================================================================
+   탭2: 숙소 규칙 토글
+   ================================================================ */
+function toggleRule(header){
+  const detail=header.nextElementSibling;
+  const chevron=header.querySelector('.chevron');
+  if(detail.style.maxHeight && detail.style.maxHeight!=='0px'){
+    detail.style.maxHeight='0px';
+    chevron.classList.remove('open');
+  } else {
+    detail.style.maxHeight=detail.scrollHeight+'px';
+    chevron.classList.add('open');
+  }
+}
+
+/* ================================================================
+   탭3: 일정표
+   ================================================================ */
+let currentDay=0;
+function switchDay(d){
+  currentDay=d;
+  document.querySelectorAll('.day-tab').forEach((tab,j)=>tab.classList.toggle('active',j===d));
+  renderSchedule(d);
+}
+function renderSchedule(d){
+  const items=scheduleData[d];
+  let html='<div class="timeline">';
+  items.forEach(item=>{
+    html+=`<div class="tl-item tl-${item.type}">
+      <div class="tl-time">${item.t}</div>
+      <div class="tl-dot-line"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <div class="tl-title">${item.title}</div>
+        <div class="tl-sub">${item.sub}</div>
+        ${item.badge?`<span class="tl-badge">${item.badge}</span>`:''}
+      </div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('schedule').innerHTML=html;
+}
+renderSchedule(0);
+</script>
+</body>
+</html>

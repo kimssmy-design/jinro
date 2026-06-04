@@ -149,17 +149,24 @@ body { max-width: 430px; margin: 0 auto; min-height: 100dvh; position: relative;
 .tl-warn .tl-badge { background: rgba(232,68,58,0.1); color: var(--red); }
 
 /* ── 탭4: 생활관 배정 ── */
-.room-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 10px; overflow: hidden; }
-.room-header { display: flex; align-items: center; padding: 14px 16px; gap: 12px; }
-.room-number { width: 48px; height: 48px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; flex-shrink: 0; }
+.class-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+.class-tab { flex: 1; background: var(--card); border: 1.5px solid var(--separator-bold); border-radius: var(--radius-xs); padding: 8px 4px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.class-tab.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+.room-card { background: var(--card); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); margin-bottom: 8px; overflow: hidden; }
+.room-header { display: flex; align-items: center; padding: 10px 12px; gap: 10px; }
+.room-number { width: 36px; height: 36px; border-radius: var(--radius-xs); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.room-floor1 .room-number { background: rgba(59,165,93,0.1); color: var(--green); }
 .room-floor2 .room-number { background: rgba(43,76,126,0.1); color: var(--navy); }
 .room-floor3 .room-number { background: rgba(123,104,181,0.1); color: var(--purple); }
 .room-header .room-meta { flex: 1; }
-.room-header .room-label { font-size: 11px; color: var(--text-tertiary); font-weight: 500; }
-.room-header .room-title { font-size: 16px; font-weight: 600; }
-.room-header .room-count { font-size: 12px; color: var(--text-secondary); background: var(--bg); border-radius: 20px; padding: 3px 10px; font-weight: 500; flex-shrink: 0; }
-.room-members { padding: 0 16px 14px 76px; display: flex; flex-wrap: wrap; gap: 6px; }
-.room-member { background: var(--bg); border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 500; }
+.room-header .room-label { font-size: 10px; color: var(--text-tertiary); font-weight: 500; }
+.room-header .room-title { font-size: 14px; font-weight: 600; }
+.room-header .room-count { font-size: 11px; color: var(--text-secondary); background: var(--bg); border-radius: 20px; padding: 2px 8px; font-weight: 500; flex-shrink: 0; }
+.room-members { padding: 0 12px 10px 58px; display: flex; flex-wrap: wrap; gap: 5px; }
+.room-member { background: var(--bg); border-radius: 6px; padding: 4px 10px; font-size: 12px; font-weight: 500; }
+.floor-label { padding: 10px 4px 6px; font-size: 11px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.5px; }
+.class-content { display: none; }
+.class-content.active { display: block; }
 
 /* ── 하단 워터마크 ── */
 .footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-tertiary); }
@@ -316,112 +323,55 @@ body { max-width: 430px; margin: 0 auto; min-height: 100dvh; position: relative;
 
 <!-- ===== 탭4: 생활관 배정 ===== -->
 <div id="tab3" class="tab-content">
-  <div class="alert-card info" style="margin-bottom: 14px;">
-    <div class="alert-title">🏢 생활관 배정 안내 (2반)</div>
-    <div class="alert-item"><span class="bullet">📍</span><span>2층(200번대) · 3층(300번대) 배정</span></div>
-    <div class="alert-item"><span class="bullet">🔑</span><span>전자키 분실 시 개인 유료 배상</span></div>
+  <div class="alert-card info" style="margin-bottom: 12px; padding: 14px;">
+    <div class="alert-title" style="font-size:14px; margin-bottom:6px;">🏢 생활관 배정 안내</div>
+    <div class="alert-item" style="font-size:12px;"><span class="bullet">🔑</span><span>전자키 분실 시 개인 유료 배상</span></div>
   </div>
 
-  <div style="padding: 2px 4px 8px;"><span style="font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.5px;">2층</span></div>
-
-  <div class="room-card room-floor2">
-    <div class="room-header">
-      <div class="room-number">202</div>
-      <div class="room-meta">
-        <div class="room-label">생활관 2층</div>
-        <div class="room-title">202호</div>
-      </div>
-      <span class="room-count">4명</span>
-    </div>
-    <div class="room-members">
-      <span class="room-member">3224</span><span class="room-member">3206</span><span class="room-member">3214</span><span class="room-member">3220</span>
-    </div>
+  <div class="class-tabs">
+    <div class="class-tab active" onclick="switchClass(0)">1반</div>
+    <div class="class-tab" onclick="switchClass(1)">2반</div>
+    <div class="class-tab" onclick="switchClass(2)">4반</div>
   </div>
 
-  <div class="room-card room-floor2">
-    <div class="room-header">
-      <div class="room-number">203</div>
-      <div class="room-meta">
-        <div class="room-label">생활관 2층</div>
-        <div class="room-title">203호</div>
-      </div>
-      <span class="room-count">4명</span>
-    </div>
-    <div class="room-members">
-      <span class="room-member">3212</span><span class="room-member">3209</span><span class="room-member">3203</span><span class="room-member">3210</span>
-    </div>
+  <!-- 1반 -->
+  <div id="cls0" class="class-content active">
+    <div class="floor-label">1층</div>
+    <div class="room-card room-floor1"><div class="room-header"><div class="room-number">102</div><div class="room-meta"><div class="room-title">102호</div></div><span class="room-count">2명</span></div><div class="room-members"><span class="room-member">3105</span><span class="room-member">3114</span></div></div>
+    <div class="room-card room-floor1"><div class="room-header"><div class="room-number">103</div><div class="room-meta"><div class="room-title">103호</div></div><span class="room-count">2명</span></div><div class="room-members"><span class="room-member">3106</span><span class="room-member">3107</span></div></div>
+    <div class="room-card room-floor1"><div class="room-header"><div class="room-number">104</div><div class="room-meta"><div class="room-title">104호</div></div><span class="room-count">3명</span></div><div class="room-members"><span class="room-member">3109</span><span class="room-member">3120</span><span class="room-member">3121</span></div></div>
+    <div class="room-card room-floor1"><div class="room-header"><div class="room-number">105</div><div class="room-meta"><div class="room-title">105호</div></div><span class="room-count">4명</span></div><div class="room-members"><span class="room-member">3101</span><span class="room-member">3102</span><span class="room-member">3111</span><span class="room-member">3125</span></div></div>
+    <div class="floor-label">3층</div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">302</div><div class="room-meta"><div class="room-title">302호</div></div><span class="room-count">4명</span></div><div class="room-members"><span class="room-member">3104</span><span class="room-member">3113</span><span class="room-member">3118</span><span class="room-member">3123</span></div></div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">303</div><div class="room-meta"><div class="room-title">303호</div></div><span class="room-count">3명</span></div><div class="room-members"><span class="room-member">3112</span><span class="room-member">3115</span><span class="room-member">3119</span></div></div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">305</div><div class="room-meta"><div class="room-title">305호</div></div><span class="room-count">2명</span></div><div class="room-members"><span class="room-member">3103</span><span class="room-member">3110</span></div></div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">306</div><div class="room-meta"><div class="room-title">306호</div></div><span class="room-count">2명</span></div><div class="room-members"><span class="room-member">3116</span><span class="room-member">3122</span></div></div>
   </div>
 
-  <div class="room-card room-floor2">
-    <div class="room-header">
-      <div class="room-number">205</div>
-      <div class="room-meta">
-        <div class="room-label">생활관 2층</div>
-        <div class="room-title">205호</div>
-      </div>
-      <span class="room-count">2명</span>
-    </div>
-    <div class="room-members">
-      <span class="room-member">3205</span><span class="room-member">3216</span>
-    </div>
+  <!-- 2반 -->
+  <div id="cls1" class="class-content">
+    <div class="floor-label">2층</div>
+    <div class="room-card room-floor2"><div class="room-header"><div class="room-number">202</div><div class="room-meta"><div class="room-title">202호</div></div><span class="room-count">4명</span></div><div class="room-members"><span class="room-member">3224</span><span class="room-member">3206</span><span class="room-member">3214</span><span class="room-member">3220</span></div></div>
+    <div class="room-card room-floor2"><div class="room-header"><div class="room-number">203</div><div class="room-meta"><div class="room-title">203호</div></div><span class="room-count">4명</span></div><div class="room-members"><span class="room-member">3212</span><span class="room-member">3209</span><span class="room-member">3203</span><span class="room-member">3210</span></div></div>
+    <div class="room-card room-floor2"><div class="room-header"><div class="room-number">205</div><div class="room-meta"><div class="room-title">205호</div></div><span class="room-count">2명</span></div><div class="room-members"><span class="room-member">3205</span><span class="room-member">3216</span></div></div>
+    <div class="floor-label">3층</div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">307</div><div class="room-meta"><div class="room-title">307호</div></div><span class="room-count">4명</span></div><div class="room-members"><span class="room-member">3213</span><span class="room-member">3201</span><span class="room-member">3211</span><span class="room-member">3217</span></div></div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">308</div><div class="room-meta"><div class="room-title">308호</div></div><span class="room-count">3명</span></div><div class="room-members"><span class="room-member">3218</span><span class="room-member">3223</span><span class="room-member">3225</span></div></div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">309</div><div class="room-meta"><div class="room-title">309호</div></div><span class="room-count">3명</span></div><div class="room-members"><span class="room-member">3207</span><span class="room-member">3219</span><span class="room-member">3202</span></div></div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">310</div><div class="room-meta"><div class="room-title">310호</div></div><span class="room-count">2명</span></div><div class="room-members"><span class="room-member">3215</span><span class="room-member">3204</span></div></div>
   </div>
 
-  <div style="padding: 14px 4px 8px;"><span style="font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.5px;">3층</span></div>
-
-  <div class="room-card room-floor3">
-    <div class="room-header">
-      <div class="room-number">307</div>
-      <div class="room-meta">
-        <div class="room-label">생활관 3층</div>
-        <div class="room-title">307호</div>
-      </div>
-      <span class="room-count">4명</span>
-    </div>
-    <div class="room-members">
-      <span class="room-member">3213</span><span class="room-member">3201</span><span class="room-member">3211</span><span class="room-member">3217</span>
-    </div>
-  </div>
-
-  <div class="room-card room-floor3">
-    <div class="room-header">
-      <div class="room-number">308</div>
-      <div class="room-meta">
-        <div class="room-label">생활관 3층</div>
-        <div class="room-title">308호</div>
-      </div>
-      <span class="room-count">3명</span>
-    </div>
-    <div class="room-members">
-      <span class="room-member">3218</span><span class="room-member">3223</span><span class="room-member">3225</span>
-    </div>
-  </div>
-
-  <div class="room-card room-floor3">
-    <div class="room-header">
-      <div class="room-number">309</div>
-      <div class="room-meta">
-        <div class="room-label">생활관 3층</div>
-        <div class="room-title">309호</div>
-      </div>
-      <span class="room-count">3명</span>
-    </div>
-    <div class="room-members">
-      <span class="room-member">3207</span><span class="room-member">3219</span><span class="room-member">3202</span>
-    </div>
-  </div>
-
-  <div class="room-card room-floor3">
-    <div class="room-header">
-      <div class="room-number">310</div>
-      <div class="room-meta">
-        <div class="room-label">생활관 3층</div>
-        <div class="room-title">310호</div>
-      </div>
-      <span class="room-count">2명</span>
-    </div>
-    <div class="room-members">
-      <span class="room-member">3215</span><span class="room-member">3204</span>
-    </div>
+  <!-- 4반 -->
+  <div id="cls2" class="class-content">
+    <div class="floor-label">2층</div>
+    <div class="room-card room-floor2"><div class="room-header"><div class="room-number">210</div><div class="room-meta"><div class="room-title">210호</div></div><span class="room-count">4명</span></div><div class="room-members"><span class="room-member">3403</span><span class="room-member">3405</span><span class="room-member">3410</span><span class="room-member">3418</span></div></div>
+    <div class="room-card room-floor2"><div class="room-header"><div class="room-number">211</div><div class="room-meta"><div class="room-title">211호</div></div><span class="room-count">3명</span></div><div class="room-members"><span class="room-member">3421</span><span class="room-member">3423</span><span class="room-member">3424</span></div></div>
+    <div class="room-card room-floor2"><div class="room-header"><div class="room-number">212</div><div class="room-meta"><div class="room-title">212호</div></div><span class="room-count">3명</span></div><div class="room-members"><span class="room-member">3409</span><span class="room-member">3414</span><span class="room-member">3419</span></div></div>
+    <div class="room-card room-floor2"><div class="room-header"><div class="room-number">213</div><div class="room-meta"><div class="room-title">213호</div></div><span class="room-count">3명</span></div><div class="room-members"><span class="room-member">3404</span><span class="room-member">3407</span><span class="room-member">3420</span></div></div>
+    <div class="floor-label">3층</div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">314</div><div class="room-meta"><div class="room-title">314호</div></div><span class="room-count">3명</span></div><div class="room-members"><span class="room-member">3402</span><span class="room-member">3412</span><span class="room-member">3406</span></div></div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">315</div><div class="room-meta"><div class="room-title">315호</div></div><span class="room-count">3명</span></div><div class="room-members"><span class="room-member">3401</span><span class="room-member">3415</span><span class="room-member">3422</span></div></div>
+    <div class="room-card room-floor3"><div class="room-header"><div class="room-number">316</div><div class="room-meta"><div class="room-title">316호</div></div><span class="room-count">4명</span></div><div class="room-members"><span class="room-member">3408</span><span class="room-member">3416</span><span class="room-member">3411</span><span class="room-member">3417</span></div></div>
   </div>
 </div>
 
@@ -732,6 +682,14 @@ function renderSchedule(d){
   document.getElementById('schedule').innerHTML=html;
 }
 renderSchedule(0);
+
+/* ================================================================
+   탭4: 반별 생활관 전환
+   ================================================================ */
+function switchClass(c){
+  document.querySelectorAll('.class-content').forEach((el,j)=>el.classList.toggle('active',j===c));
+  document.querySelectorAll('.class-tab').forEach((tab,j)=>tab.classList.toggle('active',j===c));
+}
 </script>
 </body>
 </html>

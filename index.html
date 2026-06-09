@@ -206,6 +206,44 @@ body { max-width: 430px; margin: 0 auto; min-height: 100dvh; position: relative;
 .cl-reset { display: block; width: 100%; margin-top: 16px; padding: 12px; background: var(--card); color: var(--red); border: 1.5px solid var(--red); border-radius: var(--radius-xs); font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; }
 .cl-reset:active { background: var(--red); color: #fff; }
 
+/* ── 교사 버튼 & 모달 & 오버레이 ── */
+.teacher-btn { display: inline-block; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; font-size: 10px; font-weight: 600; padding: 2px 8px; margin-left: 6px; cursor: pointer; vertical-align: middle; font-family: inherit; letter-spacing: 0.3px; }
+.pw-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); justify-content: center; align-items: center; }
+.pw-modal.show { display: flex; }
+.pw-box { background: var(--card); border-radius: var(--radius); padding: 28px 24px; width: 300px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+.pw-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.pw-box p { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; }
+.pw-box input { width: 100%; border: 1.5px solid var(--separator-bold); border-radius: var(--radius-xs); padding: 10px 14px; font-size: 15px; font-family: inherit; text-align: center; outline: none; -webkit-appearance: none; letter-spacing: 4px; }
+.pw-box input:focus { border-color: var(--navy); }
+.pw-err { color: var(--red); font-size: 12px; margin-top: 8px; display: none; }
+.pw-btns { display: flex; gap: 8px; margin-top: 16px; }
+.pw-btns button { flex: 1; padding: 10px; border-radius: var(--radius-xs); font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; border: none; }
+.pw-cancel { background: var(--bg); color: var(--text-secondary); }
+.pw-confirm { background: var(--navy); color: #fff; }
+
+.teacher-overlay { display: none; position: fixed; inset: 0; z-index: 9998; background: var(--bg); overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.teacher-overlay.show { display: block; }
+.to-header { background: linear-gradient(135deg, #1B3150, #2B4C7E); color: #fff; padding: calc(var(--safe-top) + 12px) 16px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+.to-header h2 { font-size: 16px; font-weight: 700; }
+.to-header .to-badge { background: var(--red); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+.to-close { background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 13px; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-family: inherit; font-weight: 500; }
+.to-body { padding: 12px 16px 40px; }
+.to-section { margin-bottom: 16px; }
+.to-section-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy); }
+.to-card { background: var(--card); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); padding: 14px; margin-bottom: 8px; }
+.to-card-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.to-card p, .to-card li { font-size: 12px; line-height: 1.7; color: var(--text-secondary); }
+.to-card ul { padding-left: 16px; }
+.to-card li { margin-bottom: 3px; }
+.to-card .highlight { color: var(--red); font-weight: 600; }
+.to-card .phone { display: inline-block; background: rgba(43,76,126,0.08); color: var(--navy); font-weight: 600; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+.to-alert { background: #FFF2F2; border: 1px solid rgba(232,68,58,0.15); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 8px; }
+.to-alert p { font-size: 12px; line-height: 1.7; color: #C22; }
+.to-alert .alert-head { font-size: 13px; font-weight: 700; color: var(--red); margin-bottom: 4px; }
+.to-info { background: #F0F4F9; border: 1px solid rgba(43,76,126,0.1); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 8px; }
+.to-info p { font-size: 12px; line-height: 1.7; color: var(--text-secondary); }
+.to-info .info-head { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+
 /* ── 하단 워터마크 ── */
 .footer { text-align: center; padding: 20px; font-size: 11px; color: var(--text-tertiary); }
 </style>
@@ -215,7 +253,7 @@ body { max-width: 430px; margin: 0 auto; min-height: 100dvh; position: relative;
 <!-- ===== 상단 배너 ===== -->
 <div class="top-banner">
   <span class="badge">2026 씨앗드림</span>
-  <div class="title">진로체험학습 안내</div>
+  <div class="title">진로체험학습 안내 <button class="teacher-btn" onclick="openTeacherModal()">교사</button></div>
   <div class="subtitle">강원특별자치도교육청 진로교육원 · 2박 3일</div>
   <div class="gather-info">
     <div class="time">6.10(수) 오전 7:40 집결</div>
@@ -826,6 +864,236 @@ function clRender(){
   clUpdate();
 }
 clRender();
+
+/* ================================================================
+   교사 모드: 비밀번호 & 오버레이
+   ================================================================ */
+const TEACHER_PW='1004';
+function openTeacherModal(){
+  document.getElementById('pwModal').classList.add('show');
+  setTimeout(()=>document.getElementById('pwInput').focus(),200);
+}
+function closePwModal(){
+  document.getElementById('pwModal').classList.remove('show');
+  document.getElementById('pwInput').value='';
+  document.getElementById('pwErr').style.display='none';
+}
+function checkPw(){
+  const v=document.getElementById('pwInput').value;
+  if(v===TEACHER_PW){closePwModal();document.getElementById('teacherOverlay').classList.add('show');document.body.style.overflow='hidden';}
+  else{document.getElementById('pwErr').style.display='block';document.getElementById('pwInput').value='';document.getElementById('pwInput').focus();}
+}
+function closeTeacher(){document.getElementById('teacherOverlay').classList.remove('show');document.body.style.overflow='';}
+document.getElementById('pwInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
 </script>
+
+<!-- ===== 비밀번호 모달 ===== -->
+<div class="pw-modal" id="pwModal">
+  <div class="pw-box">
+    <h3>🔒 교사 전용</h3>
+    <p>인솔교사 안내자료입니다</p>
+    <input type="password" id="pwInput" placeholder="비밀번호" maxlength="10" inputmode="numeric">
+    <div class="pw-err" id="pwErr">비밀번호가 틀렸습니다</div>
+    <div class="pw-btns">
+      <button class="pw-cancel" onclick="closePwModal()">취소</button>
+      <button class="pw-confirm" onclick="checkPw()">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 교사 전용 오버레이 ===== -->
+<div class="teacher-overlay" id="teacherOverlay">
+<div class="to-header">
+  <h2>인솔교사 안내 <span class="to-badge">비공개</span></h2>
+  <button class="to-close" onclick="closeTeacher()">✕ 닫기</button>
+</div>
+<div class="to-body">
+
+<!-- 섹션1: 생활 및 안전 지도 -->
+<div class="to-section">
+  <div class="to-section-title">📋 교육활동 시간 생활·안전 지도</div>
+
+  <div class="to-alert">
+    <div class="alert-head">⚠️ 핵심 원칙</div>
+    <p>인솔교원은 프로그램 기간 동안 <b>원 내 상주 원칙</b><br>야간 시간대에도 학생 생활지도와 안전관리 업무 수행</p>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">🍽️ 식사 시간</div>
+    <ul>
+      <li><span class="highlight">학생보다 20~30분 먼저 식사 후 지도</span></li>
+      <li>조식 07:20~08:20 (배식 08시 종료) / 중식 12:00~13:00 / 석식 18:00~19:00</li>
+      <li>학생 자리 배치, 급식지도, 식판 정리</li>
+      <li>질서지도, 식탁 소독티슈 닦기, 퇴식구 정리</li>
+    </ul>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">📚 수업 시간</div>
+    <ul>
+      <li>체험수업 중 담당 학급 학생 동선 이탈 없도록 관리</li>
+      <li>보건실 휴식 취하는 학생 수시 확인</li>
+      <li>체험실 안내: <b>1층 소강당 앞 디지털 게시판</b></li>
+      <li><span class="highlight">체험실, 체육관, 진로도서관, 1층 피아노 — 물 포함 음료 반입 금지</span></li>
+    </ul>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">🔒 기타 관리</div>
+    <ul>
+      <li>식사/자유시간: 진로도서관 학생 관리, 꿈드림채(체육관) 안전 및 비품 정리</li>
+      <li>진로교육원 밖으로 학생 나가지 않도록 관리</li>
+      <li><b>진로상담 제외</b> 2박 3일 모든 프로그램 참관 가능</li>
+      <li>Wi-Fi: <span class="phone">jinro~ / 비번: jinro1004</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 섹션2: 생활관 -->
+<div class="to-section">
+  <div class="to-section-title">🏠 생활관 사용 안내</div>
+
+  <div class="to-alert">
+    <div class="alert-head">📵 생활관 내 Wi-Fi 안 됩니다!</div>
+    <p>다음날의 안정적인 수업 활동을 위해 차단됩니다</p>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">🍪 간식 배부</div>
+    <ul>
+      <li>1일 1회 <b>20:30</b> 지급 (생활관 2층 회의실)</li>
+      <li>외부 간식 및 음식물 반입 금지</li>
+      <li><span class="highlight">선생님 간식은 없습니다 😭</span></li>
+      <li>수량이 학생 인원수만큼만 지급 → 간식 수령 시 개수 확인</li>
+    </ul>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">🛏️ 생활지도</div>
+    <ul>
+      <li>남녀 간 <span class="highlight">생활관 방 출입 금지</span></li>
+      <li>본인 방, 공용 공간만 출입 가능 (층 간, 호실 간 출입 금지)</li>
+      <li>재난 시 대피장소: <b>본관 건물 씨앗드림터 비 앞</b></li>
+    </ul>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">🌙 야간 관리</div>
+    <ul>
+      <li>취침시간: <b>23:00 ~ 07:10</b> / 기상방송 07:10</li>
+      <li>마스터키·경보기 학교별 지급</li>
+      <li>경보기: 각 층별 양쪽·엘베 앞 / <b>22시 이후</b> 학교별 협의 후 작동, 아침 해제</li>
+      <li>취침시간 이후 <span class="highlight">고성방가 금지</span></li>
+      <li>야간 창문 관리: 양쪽 끝 창문 열지 못함, 가운데만 가능</li>
+      <li>침대를 힘으로 이동하여 장판 찢는 경우 주의</li>
+    </ul>
+  </div>
+
+  <div class="to-alert">
+    <div class="alert-head">🚨 퇴소조치 사유</div>
+    <p>무단 이탈, 흡연, 음주, 폭력(사이버·성관련 등), 규정 위반</p>
+  </div>
+
+  <div class="to-info">
+    <div class="info-head">📞 긴급 연락처</div>
+    <p>
+      야간 응급: <span class="phone">속초의료원 033-630-6190</span><br>
+      시설 문제(온수, 냉난방 등): <span class="phone">당직주무관 (생활관 1층)</span><br>
+      생활관 당직실: <span class="phone">033-639-9863</span><br><br>
+      ※ 오후 10시 ~ 오전 8시: 담당 연구사·주무관 퇴근<br>
+      → 1차적으로 생활관 당직 주무관에게 문의
+    </p>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">🧹 기타 사항</div>
+    <ul>
+      <li>명찰 착용 필수 / 슬리퍼는 생활관 내에서만 / 운동화 착용 권장</li>
+      <li>휴대폰 관리: 학교 자체 규정 (보관용 가방 구비)</li>
+      <li><span class="highlight">화장실: 휴지·물티슈는 꼭 쓰레기통에!</span></li>
+      <li>시설·비품 파손 시 유료 배상</li>
+      <li>건전지, 모기약 구비 중</li>
+      <li>명찰 분실 시 학생 재발급 물품 있음</li>
+    </ul>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">💊 비상약품 (2층 회의실)</div>
+    <ul>
+      <li>바로 지급 가능: <b>파스, 후시딘</b>만 가능</li>
+      <li><span class="highlight">해열제, 감기약, 소화제 → 반드시 학부모 통화 후 동의 시만 지급</span></li>
+    </ul>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">🚪 퇴소 당일 (금요일 아침)</div>
+    <ul>
+      <li>생활관 문 개방, 마스터키·경보기 반납</li>
+      <li><b>9시까지</b> 침구(이불, 베개 커버, 깔개) 복도에 내놓기</li>
+      <li><span class="highlight">※ 파란색 매트리스 커버는 그대로 둘 것</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 섹션3: 사진첩 -->
+<div class="to-section">
+  <div class="to-section-title">📸 꿈을 찍는 반별 사진첩 만들기</div>
+
+  <div class="to-info">
+    <div class="info-head">⏰ 2일차 13:00 ~ 14:30</div>
+    <p>사진첩 책자안의 미션을 해결하고 사진을 찍는 시간</p>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">📷 사진 구성 (총 11장)</div>
+    <ul>
+      <li>사진첩용 미션 사진: <b>7장</b></li>
+      <li>선생님이 전하는 이야기: <b>1장</b> (닫는 마당 학교별 영상 자료로 이용)</li>
+      <li>학생 체험활동 사진: <b>3장</b></li>
+    </ul>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">📝 책자 작성</div>
+    <ul>
+      <li>3~9쪽: 학생들과 함께 작성</li>
+      <li>10쪽: 학생들 롤링페이퍼</li>
+      <li>11쪽: 담임선생님이 작성 (선생님이 전하는 이야기)</li>
+    </ul>
+  </div>
+
+  <div class="to-alert">
+    <div class="alert-head">📤 제출 마감</div>
+    <p>찍은 사진 11장 → 담임선생님이 <b>당일 17:00까지</b> 인솔교사 단톡방에 제출<br>(학교·학년·반 기재)</p>
+    <p style="margin-top:6px;">완성된 사진첩 → 학급별로 활동 후 <b>학교로 가져가기</b></p>
+  </div>
+</div>
+
+<!-- 섹션4: 시설 이용 -->
+<div class="to-section">
+  <div class="to-section-title">🏢 시설 이용 안내</div>
+
+  <div class="to-card">
+    <div class="to-card-title">🏋️ 체육관 · 진로도서관</div>
+    <p>이용 시간: <b>12:00~13:00 / 18:00~19:00</b></p>
+  </div>
+
+  <div class="to-card">
+    <div class="to-card-title">☕ 카페 [공감]</div>
+    <ul>
+      <li>이용 시간: <b>9:30 ~ 16:30</b></li>
+      <li>테이크아웃 시 <b>텀블러 필요</b></li>
+      <li>점심시간 (11:30~12:30) 이용 불가</li>
+      <li>인솔교사 명찰에 <b>음료이용권 2장</b> 지원</li>
+    </ul>
+  </div>
+</div>
+
+<div style="text-align:center; padding: 20px; font-size: 11px; color: var(--text-tertiary);">
+  인솔교사 전용 안내자료 · 학생 비공개
+</div>
+
+</div><!-- .to-body -->
+</div><!-- .teacher-overlay -->
 </body>
 </html>

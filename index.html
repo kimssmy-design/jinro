@@ -223,11 +223,11 @@ body { max-width: 430px; margin: 0 auto; min-height: 100dvh; position: relative;
 
 .teacher-overlay { display: none; position: fixed; inset: 0; z-index: 9998; background: var(--bg); overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .teacher-overlay.show { display: block; }
-.to-header { background: linear-gradient(135deg, #1B3150, #2B4C7E); color: #fff; padding: calc(var(--safe-top) + 12px) 16px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+.to-header { background: linear-gradient(135deg, #1B3150, #2B4C7E); color: #fff; padding: calc(var(--safe-top) + 12px) 16px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; max-width: 430px; margin: 0 auto; }
 .to-header h2 { font-size: 16px; font-weight: 700; }
 .to-header .to-badge { background: var(--red); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
 .to-close { background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 13px; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-family: inherit; font-weight: 500; }
-.to-body { padding: 12px 16px 40px; }
+.to-body { padding: 12px 16px 40px; max-width: 430px; margin: 0 auto; }
 .to-section { margin-bottom: 16px; }
 .to-section-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy); }
 .to-card { background: var(--card); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); padding: 14px; margin-bottom: 8px; }
